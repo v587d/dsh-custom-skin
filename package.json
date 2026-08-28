@@ -1,0 +1,48 @@
+{
+  "name": "dsh-custom-skin",
+  "version": "0.1.0",
+  "description": "DSH Web GUI plugin: custom UI/code fonts plus theme selection (palettes ported from dsh-refined: Border / Nord / Twilight / GitHub / Atom One), live settings page, localStorage persistence.",
+  "type": "module",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/v587d/dsh-custom-skin.git"
+  },
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-ui-theme"
+      ],
+      "platform": "web",
+      "immediately": true
+    }
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "font",
+    "theme",
+    "skin",
+    "ui"
+  ],
+  "license": "MIT"
+}

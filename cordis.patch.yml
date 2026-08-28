@@ -1,0 +1,6 @@
+# dsh-custom-skin bundle patch
+# Install: dsh plugin --profile web add link:<本目录绝对路径>
+# 然后重启 dsh web
+- insert:
+    - id: custom-skin
+      name: dsh-custom-skin

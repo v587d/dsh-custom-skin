@@ -1,0 +1,7 @@
+# junk from Windows (ADS download markers)
+*:Zone.Identifier
+*.Zone.Identifier
+
+# local deps / tooling
+node_modules/
+.DS_Store
