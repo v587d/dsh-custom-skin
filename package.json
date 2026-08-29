@@ -1,6 +1,6 @@
 {
   "name": "dsh-custom-skin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DSH Web GUI plugin: custom UI/code fonts plus theme selection (palettes ported from dsh-refined: Border / Nord / Twilight / GitHub / Atom One), live settings page, localStorage persistence.",
   "type": "module",
   "main": "lib/index.js",

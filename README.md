@@ -75,13 +75,15 @@ location.reload()
   `--dsw-alias-bg-layer-3`、`--dsw-alias-label-tertiary`、`--dsw-alias-markdown-*` 等在
   0.1.1-rc.2 不存在）；Markdown 美化 CSS 依赖 `[class*="_markdown_"]` 与
   `body[data-ds-dark-theme]` 两个选择器，升级 DSH 后需复查。
-- **宽表格抖动修复**：DSH 对 ≥4 列的宽表格（`.md-table-wide`）平时
-  `overflow-x:hidden` + `padding-bottom: var(--dsh-scrollbar-width, 8px)`，
-  hover 时切到 `overflow-x:auto` 并清零 padding，但 DSH 构建从未定义
-  `--dsh-scrollbar-width`（恒为 8px 兜底）。在传统滚动条系统（Windows 等约
-  15–17px）下 hover 会让表格高度跳变、页面抖动。插件在主题 CSS 中把实测的
-  真实滚动条尺寸发布为 `--dsh-scrollbar-width`（悬浮滚动条系统实测为 0），
-  使 hover 前后总高度一致。该令牌名与 DSH 构建耦合，升级 DSH 后需复查。
+- **宽表格抖动修复（主题无关，总是生效）**：DSH 对 ≥4 列的宽表格
+  （`.md-table-wide`）平时 `overflow-x:hidden` + `padding-bottom:
+  var(--dsh-scrollbar-width, 8px)`，hover 时切到 `overflow-x:auto` 并清零
+  padding，但 DSH 构建从未定义 `--dsh-scrollbar-width`（恒为 8px 兜底）。
+  在传统滚动条系统（Windows 等约 15–17px）下 hover 会让表格高度跳变、页面
+  抖动。插件在 `applySkin` 中**无条件**发布 `:root { --dsh-scrollbar-width:
+  <实测值>px }`（探针实测水平滚动条高度；悬浮滚动条系统实测为 0），使 hover
+  前后总高度一致；不再依赖是否选择了配色主题。该令牌名与 DSH 构建耦合，升级
+  DSH 后需复查。
 - 设置页用 `ctx.slots.inject('settings.section', () => ctx.slots.register({...}, Panel))`。
 - **inject 有两处、写法不同**：
   - bundle 内插件对象的 `inject` 用**服务 key**：`['slots', 'theme']`
