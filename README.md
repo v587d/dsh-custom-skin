@@ -32,9 +32,11 @@ dsh web
 > 卸载：`dsh plugin --profile web remove dsh-custom-skin`。
 > 验证：重启后 设置 → Custom Skin 出现，或 `grep dsh-custom-skin ~/.dsh/profiles/web/package.json`。
 
-> 兼容性：在 DSH `0.1.1-rc.2` 上开发验证。主题令牌与 Markdown 选择器
-> （`[class*="_markdown_"]`、`body[data-ds-dark-theme]`）随 DSH 构建版本
-> 变化，升级 DSH 后如失效，按文末「开发注意事项」复查。
+> 兼容性：`0.1.1-rc.2` 开发，`0.1.2-rc.1` 实测通过（client bundle 形态、
+> `slots`/`theme` 服务、`settings.section` 注册协议、
+> `[class*="_markdown_"]`、`body[data-ds-dark-theme]`、`.md-table-wide`
+> 在 0.1.2 均未变）。主题令牌与 Markdown 选择器随 DSH 构建版本变化，
+> 升级 DSH 后如失效，按文末「开发注意事项」复查。
 
 ## 使用
 
@@ -71,10 +73,14 @@ location.reload()
   与官方编译产物一致。
 - 主题走 `ctx.theme.overrideTokens('custom-skin', { '--dsw-alias-xxx': { light, dark } })`，
   不要手写 `:root` 覆盖颜色令牌（令牌要求 light/dark 成对）。
-  `buildTokens` 只输出**当前 DSH 构建真实存在的令牌**（以 Theme inspect provider 为准；
-  `--dsw-alias-bg-layer-3`、`--dsw-alias-label-tertiary`、`--dsw-alias-markdown-*` 等在
-  0.1.1-rc.2 不存在）；Markdown 美化 CSS 依赖 `[class*="_markdown_"]` 与
-  `body[data-ds-dark-theme]` 两个选择器，升级 DSH 后需复查。
+  `buildTokens` 只输出 **Theme inspect provider 当前列出的可覆盖令牌**
+  （0.1.2-rc.1 为 13 个），而不是「设计令牌表里出现过的所有名字」——
+  `--dsw-alias-bg-layer-3`、`--dsw-alias-label-tertiary`、
+  `--dsw-alias-markdown-*` 等 0.1.1-rc.2 里没有、0.1.2-rc.1 的设计令牌表里
+  已经有了，但仍不在可覆盖清单内，写了也不生效（想扩展先查
+  Theme inspect provider 的最新清单）；Markdown 美化 CSS 依赖
+  `[class*="_markdown_"]` 与 `body[data-ds-dark-theme]` 两个选择器，
+  升级 DSH 后需复查。
 - **宽表格抖动修复（主题无关，总是生效）**：DSH 对 ≥4 列的宽表格
   （`.md-table-wide`）平时 `overflow-x:hidden` + `padding-bottom:
   var(--dsh-scrollbar-width, 8px)`，hover 时切到 `overflow-x:auto` 并清零
@@ -89,15 +95,21 @@ location.reload()
   依赖的 padding，任何溢出与否、任何滚动条尺寸下高度都恒定（与 DSH 对小
   表格 `.tableFill` 的做法一致）。代价：宽表格的横向滚动条不再"hover 才
   出现"，而是常驻可见。类名 `md-table-wide` 与令牌名 `--dsh-scrollbar-width`
-  与 DSH 构建耦合，升级 DSH 后需复查。
+  与 DSH 构建耦合，升级 DSH 后需复查（0.1.2-rc.1 已复查：`.md-table-wide`
+  的 hover 规则与 `--dsh-scrollbar-width` 的 8px 兜底都没变）。
 - 设置页用 `ctx.slots.inject('settings.section', () => ctx.slots.register({...}, Panel))`。
 - **inject 有两处、写法不同**：
   - bundle 内插件对象的 `inject` 用**服务 key**：`['slots', 'theme']`
     （fiber 靠它在 ctx 注册表里等服务；写包名会永远 pending，
     启动页报 "waiting for services: @deepseek-ai/..."）；
   - `package.json` 的 `dsh.client.inject` 用**包名**：
-    `['@deepseek-ai/dsh-client-ui-slots', '@deepseek-ai/dsh-client-ui-theme']`
+    `['@deepseek-ai/dsh-client-ui-renderer', '@deepseek-ai/dsh-client-ui-theme']`
     （仅用于 boot 清单预取/排序）。两者各司其职，别混。
+    包名会随 DSH 版本搬家：0.1.1 里 slots 的包名是
+    `@deepseek-ai/dsh-client-ui-slots`，**0.1.2 起已合并进
+    `@deepseek-ai/dsh-client-ui-renderer`**。写旧包名不会报错——构图时
+    host 只看 `external`、浏览器端对不在启动图里的 inject 包名直接跳过——
+    代价是丢掉「slots 提供方先于本插件加载」的排序保证。
 - 改完 `lib/client.js` 后无需重装，重启 `dsh web` 即可（bundle 内容 hash 变化会自动换 rev）。
 
 ## 目录
