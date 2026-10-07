@@ -1,20 +1,29 @@
 {
   "name": "dsh-custom-skin",
-  "version": "0.1.2",
-  "description": "DSH Web GUI plugin: custom UI/code fonts plus theme selection (palettes ported from dsh-refined: Border / Nord / Twilight / GitHub / Atom One), live settings page, localStorage persistence.",
+  "version": "0.2.0",
+  "description": "DSH Web GUI plugin: custom UI/code fonts plus 15 color palettes, configured on the Plugins page and persisted to the profile.",
   "type": "module",
   "main": "lib/index.js",
+  "icon": "icon.svg",
+  "author": "Shawn",
+  "homepage": "https://github.com/v587d/dsh-custom-skin#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/v587d/dsh-custom-skin.git"
   },
+  "bugs": {
+    "url": "https://github.com/v587d/dsh-custom-skin/issues"
+  },
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
+    "./locale/*.json": "./locale/*.json",
     "./package.json": "./package.json"
   },
   "files": [
     "lib",
+    "locale",
+    "icon.svg",
     "cordis.patch.yml",
     "README.md",
     "LICENSE"
@@ -25,11 +34,20 @@
     },
     "client": {
       "inject": [
+        "@deepseek-ai/dsh-client-locale",
         "@deepseek-ai/dsh-client-ui-renderer",
-        "@deepseek-ai/dsh-client-ui-theme"
+        "@deepseek-ai/dsh-client-ui-theme",
+        "@deepseek-ai/dsh-client-ui-primitives",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-plugin-manager"
       ],
       "platform": "web",
       "immediately": true
+    },
+    "compatibility": {
+      "dshReleases": {
+        "0.2.0-rc.2": "compatible"
+      }
     }
   },
   "peerDependencies": {
@@ -44,5 +62,8 @@
     "skin",
     "ui"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@deepseek-ai/schemastery": "^3.18.4"
+  }
 }
