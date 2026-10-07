@@ -152,11 +152,18 @@ ctx.configForms.whileServed([ENTRY_ID], () =>
   `@deepseek-ai/dsh-client-ui-theme`、`configForms` ← `@deepseek-ai/dsh-client-ui-settings`。
   写旧包名不报错，代价是丢掉「提供方先于本插件加载」的排序保证。
 
-### 首屏不能闪
+### 首屏不能闪，老配置不能丢
 
 `configForms` 的快照要等 host 往返才 `ready`，所以浏览器侧留了一份
 `localStorage['dsh-custom-skin.v1']`：`apply()` 先用它 paint 一次，快照 `ready` 后以
 host 值为准重绘并 write-through。**host 是唯一权威**，缓存只负责第一帧不闪默认主题。
+
+0.1.x 的用户配置只在 localStorage 里、profile 条目是空的，升级后会被画回 schema 默认
+（选过 Nord 的人会莫名变成 GitHub）。所以 `apply()` 里有一次性迁移：快照首次 `ready` 时，
+若 `snapshot.user` 为空（= profile 从没存过任何字段）且 localStorage 有值，就把**与解析后
+默认值不同的那几个字段**写进 profile，并跳过这一次绘制（写入会再通知一次，避免闪默认）。
+三种情形都验过：升级 → 只补写有差异的字段；profile 已有配置 → 一个字节都不写；
+全新安装（无缓存）→ 不写。刻意重置过的用户不会被"复活"，因为那时缓存已被重置值覆盖。
 
 ### 其它
 
@@ -222,7 +229,8 @@ dsh-custom-skin/
 ## 版本
 
 `0.2.0` — 配置搬到 DSH 0.2.0 统一的插件页（`plugins.bundle.config`）、持久化改走
-`configForms`/profile、皮肤 5 → 15 套、补齐 0.2.0 新增的 4 个 state 令牌。
+`configForms`/profile（含从 0.1.x localStorage 的一次性迁移）、皮肤 5 → 15 套、
+补齐 0.2.0 新增的 4 个 state 令牌。
 `0.1.x` — `settings.section` 时代，值存 `localStorage`。
 
 发 GitHub 前自查（都过）：`node --check lib/client.js`、`node --check lib/index.js`、
