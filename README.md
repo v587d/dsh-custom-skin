@@ -1,6 +1,6 @@
 # dsh-custom-skin
 
-DeepSeek Harness（DSH）Web GUI 插件：自定义 **界面字体 / 代码字体**，以及 **15 套调色板**。
+DeepSeek Harness（DSH）Web GUI 插件：自定义 **界面字体 / 代码字体**，以及 **24 套调色板**。
 配置坐在 DSH 统一的 **插件 → 已安装插件 → dsh-custom-skin** 页面里，值存进当前 profile。
 
 - 改字体：覆盖 `--dsw-font-family`、`--ds-font-family-code`
@@ -74,14 +74,24 @@ dsh web
 | Ayu | Light | Dark | [ayu-theme/ayu-colors `ayu` (npm)](https://github.com/ayu-theme/ayu-colors) | MIT |
 | Night Owl | Day Owl | Night Owl | [sdras/night-owl-vscode-theme `themes/*.json`](https://github.com/sdras/night-owl-vscode-theme/tree/main/themes) | MIT |
 | Modus | Operandi | Vivendi | [protesilaos/modus-themes `modus-themes.el`](https://github.com/protesilaos/modus-themes/blob/main/modus-themes.el) | **GPL-3.0** |
+| Dracula | Alucard | Dracula | [dracula/dracula-theme `README`](https://github.com/dracula/dracula-theme#color-palette) + [dracula/cursor `dev/src/alucard.yml`](https://github.com/dracula/cursor/blob/main/dev/src/alucard.yml) | MIT |
+| Monokai | Monokai Light | Monokai | [ku1ik/vim-monokai `colors/monokai.vim`](https://github.com/ku1ik/vim-monokai/blob/master/colors/monokai.vim) + [zoxon/vscode-theme-monokai-light](https://github.com/zoxon/vscode-theme-monokai-light/blob/master/themes/Monokai%20Light%20Theme-color-theme.json) | MIT（两支都是） |
+| Noctis | Noctis Lux | Noctis | [liviuschera/noctis `themes/{lux,noctis}.json`](https://github.com/liviuschera/noctis/tree/master/themes) | MIT |
+| Material | Lighter | Default | [k-i-o/vsc-safe-material-theme `dist/themes/*.json`](https://github.com/k-i-o/vsc-safe-material-theme/tree/master/dist/themes) | MIT（原作者仓库已删除） |
+| Horizon | Horizon Bright | Horizon | [jolaleye/horizon-theme-vscode `src/{bright,dark}/globals.json`](https://github.com/jolaleye/horizon-theme-vscode/tree/master/src) | MIT |
+| Vitesse | Light | Dark | [antfu/vscode-theme-vitesse `themes/*.json`](https://github.com/antfu/vscode-theme-vitesse/tree/main/themes) | MIT |
+| PaperColor | light | dark | [NLKNguyen/papercolor-theme `colors/PaperColor.vim`](https://github.com/NLKNguyen/papercolor-theme/blob/master/colors/PaperColor.vim) | MIT |
+| Iceberg | light | dark | [cocopon/iceberg.vim `colors/iceberg.vim`](https://github.com/cocopon/iceberg.vim/blob/master/colors/iceberg.vim) | MIT |
+| Seoul256 | seoul256-light | seoul256 | [junegunn/seoul256.vim `colors/seoul256.vim`](https://github.com/junegunn/seoul256.vim/blob/master/colors/seoul256.vim) | MIT（仅文件头与 README 声明，仓库无 LICENSE 文件） |
 
 前 5 套移植自 [dsh-refined](https://github.com/djh2203/dsh-refined)（上游只有这 5 套，没有更多可取）；
-新增的 10 套（Catppuccin 起）色值逐个从各自上游的官方色表取并核对过，不是凭空配的。
+第 6～15 套（Catppuccin 起）与第 16～24 套（Dracula 起）的色值逐个从各自上游的官方色表取，
+并用脚本比对回原文件核对过（每个十六进制值都能在拉下来的上游文件里找到），不是凭空配的。
 
 > **许可**：本仓库整体是 MIT，但上表右两列是**配色方案的出处与上游许可**——这里搬运的是
-> 十六进制色值表（数据），不是上游的代码或字体文件。两点需要留意：Modus 的上游是 GPL-3.0，
-> Gruvbox 的上游仓库里根本没有 LICENSE 文件。如果你要 stricter 的处理，删掉这两行对应的
-> `THEMES` 条目即可，插件其余部分不受影响。
+> 十六进制色值表（数据），不是上游的代码或字体文件。三点需要留意：Modus 的上游是 GPL-3.0，
+> Gruvbox 与 Seoul256 的上游仓库里没有 LICENSE 文件（Seoul256 只在 README 和色文件头声明 MIT）。
+> 如果你要 stricter 的处理，删掉这几行对应的 `THEMES` 条目即可，插件其余部分不受影响。
 
 取色时的几个具体决定：
 Tokyo Night 的 day 方案在 nvim 上游是运行时反算的（`colors/tokyonight-day.lua` 只做
@@ -93,6 +103,40 @@ Ayu 的色值来自官方 `ayu` npm 包的静态表（`surface.* / editor.* / ui
 `common.accent`，强调色取其签名橙 `#FF8F40` / `#FA8532`。
 Night Owl 的浅色是上游的 Day Owl（`Night Owl-Light-color-theme.json`）；它的抬升面取
 `editor.selectionBackground #1D3B53`——社区图里常见的 `#112240` 在主题 JSON 中其实不存在。
+
+这一批（Dracula 起）新增时踩到的坑，记下来免得下次再踩：
+
+- **Dracula 的浅色是官方的 Alucard**（draculatheme.com/pro 说的 "a light variant"），
+  且十六进制表就公开在 MIT 的 `dracula/cursor` 里，所以不用自己配深色反算浅色。
+  深色的侧栏底 `#21222C` 取的是官方 `dracula/alacritty` 的 ANSI black（README 色表里没有这一项）。
+- **Monokai Pro 是付费且明确禁止再分发**（monokai.pro/licence），所以深色用 MIT 的
+  `ku1ik/vim-monokai` 经典表、浅色用 MIT 的 `zoxon/vscode-theme-monokai-light`，
+  完全不碰 Pro 的 filter 表。
+- **Material 的原仓库 `equinusocio/vsc-material-theme` 已被删除**，而几个 Apache 社区 fork 的
+  `themes/*.json` 是 OpenSSL 加密的 base64（当年收费解锁那件事的遗留），读不出色值；
+  这里用的是明文且 MIT 的 `k-i-o/vsc-safe-material-theme`。VS Code 系的浅色档叫 **Lighter**
+  （Paler/Higher/Larker 是 Sublime 那边的名字）。Lighter 的 `foreground #90A4AE` 在
+  `#FAFAFA` 上只有约 2.6:1，所以正文主色取同仓库 Default 的 `#263238`（Blue Grey 900），
+  `#90A4AE` 降为次要文字。
+- **Horizon 找不到 Hotwired 的原始仓库**（`branchio/`、`oliverbw/`、`dbaskette/`、`jasonm23/`
+  全部 404），现存各移植都署名 `jolaleye/horizon-theme-vscode`（MIT），浅色档叫 **Horizon Bright**。
+- **Seoul256 的色值是间接的**：文件里高亮组给的是 256 色索引，需按同文件的默认 `s:rgb_map`
+  解析（`g:seoul256_srgb` 会换一张表），这里用的是默认表；深色底 `#4B4B4B`(237) 是它
+  本来的中灰，不是打错。
+- **Vitesse** 上游所有 chrome 面都等于 `editor.background`，没有第二层；抬升/浮层取它自己的
+  `-soft` 变体底色（`#F1F0E9` / `#222222`）。深色的 `foreground #dbd7caee` 带 alpha，
+  这里落成 `#DBD7CA`。
+- **浅色模式的浮层底色**（`toastBg`）上游若没有单独定义，统一取 `#FFFFFF`，与既有各套一致。
+
+评估过但**没有**采纳的，理由都是「装进来就是个重复色卡或没有合法浅色」：
+
+- **One Half**：它的深/浅值与已有的 Atom One 基本逐字相同（同一支 Atom One 家族，
+  `#282C34 / #E06C75 / #98C379 / #61AFEF / #C678DD`），等于多放一个长得一样的色卡。
+- **Synthwave '84**：`robb0wen/synthwave-vscode` 只贡献一支 `vs-dark` 主题，
+  上游没有浅色（搜 daywave 也是 0 结果），凑不出 light/dark 成对值。
+- **Bluloco**：上游 LICENSE 是 **LGPL-3.0**，而且它深色的 chrome（`#282C34 / #ABB2BF`）
+  又和 Atom One 撞了。
+- **Winter is Coming**：深色底 `#011627` 与已有的 Night Owl 相同。
 
 社区另有 `math-lrz/dsh-theme-pack`（16 套）之类现成的 DSH 皮肤包，色表来源与授权难以逐条
 核实，故未采用。
@@ -209,6 +253,12 @@ host 值为准重绘并 write-through。**host 是唯一权威**，缓存只负�
   同理 `[class*="_markdown_"]` 与 `body[data-ds-dark-theme]` 两个选择器也要复查
   （0.2.0 的 `MarkdownText.module.css` 仍有局部类 `.markdown`，CSS Modules 生成的
   `_markdown_<hash>` 依旧命中）。
+- `lib/index.js` 里 `import '@deepseek-ai/schemastery'` 必须走 **peerDependencies**，不要写成
+  `dependencies`：`link:` 安装不会把被链接包自己的 dependencies 落到 profile 的 `node_modules`
+  里，写死依赖会让条目在**全新/独立 profile** 里静默 `failed to import`（宿主只打印一行
+  `custom-skin: failed to import`，卡片和皮肤全都不出现）。本机 web profile 之所以"看起来正常"，
+  是因为同 profile 里的 dsh-context / capital-generation 也声明了这个包，被顺带供进了模块解析——
+  属于巧合，不是保证。改成 peer 后，空 profile 只装本插件也能激活（已实测）
 - 改完 `lib/client.js` 后无需重装，重启 `dsh web` 即可（bundle 内容 hash 变化会自动换 rev）。
 
 ## 目录
@@ -228,6 +278,8 @@ dsh-custom-skin/
 
 ## 版本
 
+`0.3.0` — 调色板 15 → 24 套（新增 Dracula/Alucard、Monokai、Noctis、Material、Horizon、
+Vitesse、PaperColor、Iceberg、Seoul256），浅色 shorthand `#FFF` 统一成 6 位十六进制。
 `0.2.0` — 配置搬到 DSH 0.2.0 统一的插件页（`plugins.bundle.config`）、持久化改走
 `configForms`/profile（含从 0.1.x localStorage 的一次性迁移）、皮肤 5 → 15 套、
 补齐 0.2.0 新增的 4 个 state 令牌。
@@ -236,7 +288,8 @@ dsh-custom-skin/
 发 GitHub 前自查（都过）：`node --check lib/client.js`、`node --check lib/index.js`、
 `node -e "import('./lib/index.js')"`（host 半边能 import 且 `Config` 通过 `dsh-settings`
 的 `volatileForm` 投影）、`lib/client.js` 顶层无 `export`/`import`（经典脚本约束）、
-15 套皮肤的字段完整性与色值格式校验。
+24 套皮肤的字段完整性与色值格式校验，以及「每个十六进制值都能在拉下来的上游色表文件里找到」
+的回溯比对（漏一个就报错）。
 
 ## License
 

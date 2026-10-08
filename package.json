@@ -1,7 +1,7 @@
 {
   "name": "dsh-custom-skin",
-  "version": "0.2.0",
-  "description": "DSH Web GUI plugin: custom UI/code fonts plus 15 color palettes, configured on the Plugins page and persisted to the profile.",
+  "version": "0.3.0",
+  "description": "DSH Web GUI plugin: custom UI/code fonts plus 24 color palettes, configured on the Plugins page and persisted to the profile.",
   "type": "module",
   "main": "lib/index.js",
   "icon": "icon.svg",
@@ -51,6 +51,8 @@
     }
   },
   "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.2",
+    "@deepseek-ai/schemastery": "^3.18.4",
     "react": "^18.2.0"
   },
   "keywords": [
@@ -62,8 +64,5 @@
     "skin",
     "ui"
   ],
-  "license": "MIT",
-  "dependencies": {
-    "@deepseek-ai/schemastery": "^3.18.4"
-  }
+  "license": "MIT"
 }

@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "自定义皮肤 (dsh-custom-skin)",
-    "description": "界面/代码字体 + 15 套调色板（Border、Nord、Twilight、GitHub、Atom One、Catppuccin、Tokyo Night、Rosé Pine、Gruvbox、Everforest、Solarized、Kanagawa、Ayu、Night Owl、Modus），覆盖 DSH 主题令牌，配置保存在当前 profile。"
+    "description": "界面/代码字体 + 24 套调色板（Border、Nord、Twilight、GitHub、Atom One、Catppuccin、Tokyo Night、Rosé Pine、Gruvbox、Everforest、Solarized、Kanagawa、Ayu、Night Owl、Modus、Dracula、Monokai、Noctis、Material、Horizon、Vitesse、PaperColor、Iceberg、Seoul256），覆盖 DSH 主题令牌，配置保存在当前 profile。"
   }
 }
